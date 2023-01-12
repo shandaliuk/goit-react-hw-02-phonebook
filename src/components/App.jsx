@@ -10,24 +10,20 @@ export class App extends Component {
     filter: '',
   };
 
-  checkExclusiveness = name => {
-    for (const contact of this.state.contacts) {
-      if (name === contact.name) {
-        alert(`${name} is already in contacts.`);
-        return false;
-      }
-    }
-    return true;
-  };
+  checkExclusiveness = name =>
+    this.state.contacts.find(contact => contact.name === name);
 
   handleFormSubmit = contact => {
-    if (this.checkExclusiveness(contact.name)) {
-      this.setState(prevState => {
-        return {
-          contacts: [...prevState.contacts, contact],
-        };
-      });
+    const isExisting = this.checkExclusiveness(contact.name);
+    if (isExisting) {
+      alert(`${contact.name} is already in contacts.`);
+      return;
     }
+    this.setState(prevState => {
+      return {
+        contacts: [...prevState.contacts, contact],
+      };
+    });
   };
 
   onFilterChange = event => {
